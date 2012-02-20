@@ -1,0 +1,17 @@
+CommandBlock
+=======
+
+Block commands based on a regex pattern
+
+eg: in plugins/CommandBlock/settings.txt
+
+kill.*::Block all kill commands
+
+
+
+this will block things like
+
+/kill
+/killscore
+/kill0meter
+etc.

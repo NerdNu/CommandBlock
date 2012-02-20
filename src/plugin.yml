@@ -1,0 +1,15 @@
+name: CommandBlock
+main: nu.nerd.commandblock.CommandBlock
+version: 2.0
+author: Deaygo Jarkko
+description: Command Block
+commands:
+    cb-reload:
+        description: cb-reload
+        usage: |
+            /<command>
+
+permissions:
+    commandblock.relaod:
+        description: Allow a player to use the reload command.
+        default: op
