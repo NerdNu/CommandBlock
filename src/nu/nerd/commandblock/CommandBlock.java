@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -20,7 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandBlock extends JavaPlugin implements Listener {
 
-	HashMap<String, String> blockedCommands = new HashMap<String, String>();
+	HashMap<String, Pattern> blockedCommands = new HashMap<String, Pattern>();
 
 	@Override
 	public void onEnable() {
@@ -46,9 +48,10 @@ public class CommandBlock extends JavaPlugin implements Listener {
 		Iterator<String> localIterator = blockedCommands.keySet().iterator();
 		while (localIterator.hasNext()) {
 			String description = (String) localIterator.next();
-			String regexStr = (String) blockedCommands.get(description);
-
-			if (command.matches(regexStr)) {
+			Pattern regexpattern = blockedCommands.get(description);
+			Matcher m = regexpattern.matcher(command);
+			
+			if (m.matches()) {
 				event.getPlayer().sendMessage(
 						ChatColor.RED + "That command is disabled.");
 				event.setCancelled(true);
@@ -83,7 +86,7 @@ public class CommandBlock extends JavaPlugin implements Listener {
 	public void loadBlockedCommands() throws IOException {
 		getLogger().log(Level.INFO, "Loading commands.");
 
-		HashMap<String, String> cb = new HashMap<String, String>();
+		HashMap<String, Pattern> cb = new HashMap<String, Pattern>();
 		if (!getDataFolder().exists()) {
 			getDataFolder().mkdirs();
 		}
@@ -113,7 +116,7 @@ public class CommandBlock extends JavaPlugin implements Listener {
 			String commandStr = "";
 			commandStr = arrayOfString[0];
 			description = arrayOfString[1];
-			cb.put(description, commandStr);
+			cb.put(description, Pattern.compile(commandStr));
 		}
 		reader.close();
 		this.blockedCommands.clear();
