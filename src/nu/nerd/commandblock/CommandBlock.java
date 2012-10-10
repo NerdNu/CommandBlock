@@ -116,7 +116,7 @@ public class CommandBlock extends JavaPlugin implements Listener {
 			String commandStr = "";
 			commandStr = arrayOfString[0];
 			description = arrayOfString[1];
-			cb.put(description, Pattern.compile(commandStr));
+			cb.put(description, Pattern.compile(commandStr, Pattern.CASE_INSENSITIVE)); 
 		}
 		reader.close();
 		this.blockedCommands.clear();
